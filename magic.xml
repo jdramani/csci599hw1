@@ -1,0 +1,16 @@
+application-pdf
+<magic priority="0"><match value="$OCE,0-" type="byte" offset="7"/></magic>
+application-pdf
+<magic priority="0"><match value="$OCE,0-" type="byte" offset="7"/></magic>
+application-pdf
+<magic priority="0"><match value="$OCE,0-" type="byte" offset="7"/></magic>
+application-pdf
+<magic priority="0"><match value="$OCE,0-" type="byte" offset="7"/></magic>
+application-pdf
+<magic priority="0"><match value="$OCE,0-" type="byte" offset="7"/></magic>
+image-gif
+<magic priority="0"><match value="FHE7" type="byte" offset="4"/></magic>
+text-plain
+<magic priority="0"><match value="" type="byte" offset="0"/></magic>
+video-mp4
+<magic priority="0"><match value="HC2" type="byte" offset="3"/></magic>
