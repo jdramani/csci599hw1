@@ -1,30 +1,67 @@
 
 window.onload = function () {
 
-   
-        d3.csv('data.csv', function (data) {
+    var fht = function (path) {
+        d3.csv(path, function (data) {
            
             var label_col_full = Object.keys(data[0]);
             var label_row = [];
             var rows = [];
             var row = [];
-            for (var i = 0; i < data.length-1; i++) {
+            for (var i = 0; i < bytes; i++) {
                 label_row.push(data[i][label_col_full[0]]);
                 row = [];
-                for (var j = 1; j < label_col_full.length; j++) {
+                for (var j = 0; j < label_col_full.length; j++) {
                     row.push(parseFloat(data[i][label_col_full[j]]));
                 }
                 rows.push(row);
             }
             
-            
+            d3.select("svg").remove();
+            d3.select("rowLabelg").remove();
+            d3.select("colLabelg").remove();
             main(rows, label_col_full.slice(1), label_row);
             
         });
+        
     };
+    var mime = QueryString.mime;
+    ht = d3.select('input[name="choice"]:checked').node().value;
+    bytes = d3.select("select#bytes")[0][0].value;
+  path = "data/" + mime + "-" + ht + ".csv";
+    fht(path);
+    
+    var ht = d3.select('input[name="choice"]').node().value
+    d3.select("input#trailer").on("change", function () {
+        mime = QueryString.mime;
+        ht = this.value
+        bytes = d3.select("select#bytes")[0][0].value;
+        path = "data/" + mime + "-" + ht + ".csv";
+        console.log("PATH: " + path);
+        fht(path);
+    });
 
-var mapsize = 1000;
-var pixelsize = 2;
+    var ht = d3.select('input[name="choice"]').node().value
+    d3.select("input#header").on("change", function () {
+        mime = QueryString.mime;
+        ht = this.value
+        bytes = d3.select("select#bytes")[0][0].value;
+        path = "data/" + mime +  "-" + ht + ".csv";
+        console.log("PATH: " + path);
+        fht(path);
+    });
+
+    var bytes = d3.select("select#bytes")[0][0].value;
+    d3.select("select#bytes").on("change", function () {
+        bytes = d3.select("select#bytes")[0][0].value;
+        path = "data/" + mime +  "-" + ht + ".csv";
+        console.log("byte: " + bytes);
+        fht(path);
+    });
+};
+
+var mapsize = 2000;
+var pixelsize = 20;
 
 
 
@@ -43,8 +80,8 @@ var main = function (corr, label_col, label_row) {
 	.style('background','linear-gradient(to right,red,white,green)');
     var tooltip = body.select('div.tooltip');
     var svg = body.select('#chart').append('svg')
-        .attr('width', mapsize)
-        .attr('height', mapsize).style('margin','auto').style('margin-top','-50px').style('margin-left','-50px');;;
+        .attr('width', mapsize*3-500)
+        .attr('height', mapsize-1400).style('margin','auto').style('margin-top','-50px').style('margin-left','-50px');;;
 
   
     var row = corr;
@@ -86,8 +123,8 @@ var main = function (corr, label_col, label_row) {
 
     var matrix = svg.append('g')
         .attr('class', 'matrix')
-	.attr('height',mapsize)
-	.attr('width',mapsize)
+	.attr('height',mapsize-1400)
+	.attr('width',mapsize*3-500)
         .attr('transform', 'translate(' + (label_space + 10) + ',' + (label_space + 10) + ')')
 	.selectAll('rect.pixel').data(corr_data)
 	.enter().append('rect')
@@ -95,32 +132,18 @@ var main = function (corr, label_col, label_row) {
         .attr('width', pixelsize)
         .attr('height', pixelsize)
 	.attr('position','absolute')
-	.attr('y',function(d){return d.i*pixelsize+ label_space})
+	.attr('y',function(d){return d.i*pixelsize+ label_space-5})
 	.attr('x',function(d){return d.j*pixelsize + label_space})
         .style('fill', function (d) {
             return color(d.val);
         })
         .on('mouseover', function (d) {
-	     if(d.i > d.j){
-             tooltip.style("opacity", 0.8)
+	       tooltip.style("opacity", 0.8)
 	    .style('position', 'absolute')
             .style("left", (d3.event.pageX + 35) + 'px')
             .style("top", (d3.event.pageY + 30) + 'px')
-            .html('i:'+ d.i +"," + "j:" +d.j + "," + "Avg_Byte_Freq_Diff:" + d.val.toFixed(3));
-		}
-             else if(d.i < d.j){
-             tooltip.style("opacity", 0.8)
-	    .style('position', 'absolute')
-            .style("left", (d3.event.pageX + 35) + 'px')
-            .style("top", (d3.event.pageY + 30) + 'px')
-            .html('i:'+ d.i +"," + "j:" +d.j + "," + "Correlation_Strength:" + d.val.toFixed(3));
+            .html('Header: '+ d.i +"<br>" + "Byte: " +d.j + "<br>" + "Value: " + d.val.toFixed(3));
 
-	    }
-           else
-		{
-                 
-		}
-		
 
 		d3.select(this).style("opacity", 0.5);
         })
@@ -136,10 +159,10 @@ colLabel = []
 for(var m=0; m<256;m++)
 {
 
-colLabel.push('b'+m);
+colLabel.push('Byte '+m);
 }
-
-rowLabel = ['p0','p1','p1','p3','p4','p5','p6','p7']
+var row;
+rowLabel = ['Byte 0','Byte 1','Byte 2','Byte 3','Byte 4','Byte 5','Byte 6','Byte 7','Byte 8','Byte 9','Byte 10','Byte 11','Byte 12','Byte 13','Byte 14','Byte 15']
 var rowLabels = svg.append("g")
       .selectAll(".rowLabelg")
       .data(rowLabel)
@@ -147,11 +170,11 @@ var rowLabels = svg.append("g")
       .append("text")
       .attr("class","rowLabelg")
       .text(function (d) { return d; })
-      .style('font-size','1px')
+      .style('font-size','8px')
       .attr("x", 0)
       .attr("y", function (d, i) { return i * pixelsize; })
       .style("text-anchor", "end")
-      .attr("transform", "translate(110,111)");
+      .attr("transform", "translate(105,115)");
      
 
   var colLabels = svg.append("g")
@@ -161,14 +184,30 @@ var rowLabels = svg.append("g")
       .append("text")
       .attr("class","colLabelg")
       .text(function (d) { return d; })
-      .style('font-size','1px')
+      .style('font-size','8px')
       .attr("x", 0)
       .attr("y", function (d, i) { return i * pixelsize; })
       .style("text-anchor", "left")
-      .attr("transform", "translate(111,110) rotate (-90)");
+      .attr("transform", "translate(118,100) rotate (-90)");
 
 
 
-}
-      
+};
+ var QueryString = function () {
+    var query_string = {};
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (typeof query_string[pair[0]] === "undefined") {
+            query_string[pair[0]] = decodeURIComponent(pair[1]);
+        } else if (typeof query_string[pair[0]] === "string") {
+            var a = [query_string[pair[0]], decodeURIComponent(pair[1])];
+            query_string[pair[0]] = a;
+        } else {
+            query_string[pair[0]].push(decodeURIComponent(pair[1]));
+        }
+    }
+    return query_string;
+}();      
       

@@ -5,18 +5,36 @@
  
 <title>Correlation </title>
 <script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></script>
-<script src='d3matrix.js'>
+<script src='d3matrixheader16.js'>
 
 
 </script>
-    
+<style>
+    body{
+        background-color: whitesmoke;
+    }
+    </style> 
 </head>
 
 <body>
+    <div>
+    <input type="radio" id="header" name="choice" value="head" checked="true"> Header
+        <input type="radio" id="trailer" name="choice" value="trail"> Trailer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bytes:
+        <select id="bytes">
+            <option value="4">4 Bytes</option>
+            <option value="8">8 Bytes</option>
+            <option value="16" selected="true">16 Bytes</option>
+        </select>
+    </div>
+     <br>
+    <br>
 <g class="legend"> 
 
 <center>-1<--------------------------------0-------------------------------->1</center>
 </g>
+    <br>
+    <br>
+     
 	<div id='chart'></div>
     <div class="tooltip" style="opacity: 0.01;padding: 10px;
         background-color: white;

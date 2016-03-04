@@ -2,16 +2,16 @@
 window.onload = function () {
 
    
-        d3.csv('data.csv', function (data) {
+        d3.csv('application-rdf+xml-head4overall.csv', function (data) {
            
             var label_col_full = Object.keys(data[0]);
             var label_row = [];
             var rows = [];
             var row = [];
-            for (var i = 0; i < data.length-1; i++) {
+            for (var i = 0; i < 4; i++) {
                 label_row.push(data[i][label_col_full[0]]);
                 row = [];
-                for (var j = 1; j < label_col_full.length; j++) {
+                for (var j = 0; j < label_col_full.length; j++) {
                     row.push(parseFloat(data[i][label_col_full[j]]));
                 }
                 rows.push(row);
@@ -23,8 +23,8 @@ window.onload = function () {
         });
     };
 
-var mapsize = 1000;
-var pixelsize = 2;
+var mapsize = 2000;
+var pixelsize = 20;
 
 
 
@@ -43,7 +43,7 @@ var main = function (corr, label_col, label_row) {
 	.style('background','linear-gradient(to right,red,white,green)');
     var tooltip = body.select('div.tooltip');
     var svg = body.select('#chart').append('svg')
-        .attr('width', mapsize)
+        .attr('width', mapsize*4)
         .attr('height', mapsize).style('margin','auto').style('margin-top','-50px').style('margin-left','-50px');;;
 
   
@@ -87,7 +87,7 @@ var main = function (corr, label_col, label_row) {
     var matrix = svg.append('g')
         .attr('class', 'matrix')
 	.attr('height',mapsize)
-	.attr('width',mapsize)
+	.attr('width',mapsize*4)
         .attr('transform', 'translate(' + (label_space + 10) + ',' + (label_space + 10) + ')')
 	.selectAll('rect.pixel').data(corr_data)
 	.enter().append('rect')
@@ -95,31 +95,19 @@ var main = function (corr, label_col, label_row) {
         .attr('width', pixelsize)
         .attr('height', pixelsize)
 	.attr('position','absolute')
-	.attr('y',function(d){return d.i*pixelsize+ label_space})
+	.attr('y',function(d){return d.i*pixelsize+ label_space-5})
 	.attr('x',function(d){return d.j*pixelsize + label_space})
         .style('fill', function (d) {
             return color(d.val);
         })
         .on('mouseover', function (d) {
-	     if(d.i > d.j){
+	     
              tooltip.style("opacity", 0.8)
 	    .style('position', 'absolute')
             .style("left", (d3.event.pageX + 35) + 'px')
             .style("top", (d3.event.pageY + 30) + 'px')
-            .html('i:'+ d.i +"," + "j:" +d.j + "," + "Avg_Byte_Freq_Diff:" + d.val.toFixed(3));
-		}
-             else if(d.i < d.j){
-             tooltip.style("opacity", 0.8)
-	    .style('position', 'absolute')
-            .style("left", (d3.event.pageX + 35) + 'px')
-            .style("top", (d3.event.pageY + 30) + 'px')
-            .html('i:'+ d.i +"," + "j:" +d.j + "," + "Correlation_Strength:" + d.val.toFixed(3));
+            .html('Header: '+ d.i +"<br>" + "Byte: " +d.j + "<br>" + "Value: " + d.val.toFixed(3));
 
-	    }
-           else
-		{
-                 
-		}
 		
 
 		d3.select(this).style("opacity", 0.5);
@@ -136,10 +124,10 @@ colLabel = []
 for(var m=0; m<256;m++)
 {
 
-colLabel.push('b'+m);
+colLabel.push('Byte '+m);
 }
 
-rowLabel = ['p0','p1','p1','p3','4','5','6','7','8','9','10','11','12','13','14','15']
+rowLabel = ['Header 0','Header 1','Header 2','Header 3']
 var rowLabels = svg.append("g")
       .selectAll(".rowLabelg")
       .data(rowLabel)
@@ -147,11 +135,11 @@ var rowLabels = svg.append("g")
       .append("text")
       .attr("class","rowLabelg")
       .text(function (d) { return d; })
-      .style('font-size','1px')
+      .style('font-size','8px')
       .attr("x", 0)
       .attr("y", function (d, i) { return i * pixelsize; })
       .style("text-anchor", "end")
-      .attr("transform", "translate(110,111)");
+      .attr("transform", "translate(105,115)");
      
 
   var colLabels = svg.append("g")
@@ -161,11 +149,11 @@ var rowLabels = svg.append("g")
       .append("text")
       .attr("class","colLabelg")
       .text(function (d) { return d; })
-      .style('font-size','1px')
+      .style('font-size','8px')
       .attr("x", 0)
       .attr("y", function (d, i) { return i * pixelsize; })
       .style("text-anchor", "left")
-      .attr("transform", "translate(111,110) rotate (-90)");
+      .attr("transform", "translate(118,100) rotate (-90)");
 
 
 
