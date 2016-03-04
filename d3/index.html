@@ -1,0 +1,101 @@
+<html>
+<head>
+    <Title>MIME Diversity Classification</Title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
+    <style>
+        h1{
+            text-align: center;
+        }
+        body{
+            background-color: whitesmoke;
+        }
+        .tabcolor a:link{
+    background-color: #FFFFFF;
+}
+    </style>
+    <script>
+    $().ready(function() {
+          $(".nav-tabs li").on("click", function(e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+                $(".nav-pills li.active").removeClass("active");
+                $(this).addClass("active");
+                var mime = $("#mime").val(),
+                    url = $("a", this).data("src") + "?mime=" + mime;
+                $("iframe").attr("src", url);
+        
+
+            });
+            $("#mime").on("change", function(e) {
+
+                var mime = $(this).val(),
+                    url = $(".nav-pills li.active a").data("src") + "?mime=" + mime;
+                $("iframe").attr("src", url);
+                console.log("url"+url);
+                console.log("mime"+mime);
+            });
+         });
+    </script>
+    </head>
+    <body>
+    <div class="container">
+        <h1>MIME Diversity analysis for TREC data set</h1>
+        <label for="type">Choose the MIME type:</label>
+        <select id="mime" class="form-control">
+            <option value="octet">application/octet-stream</option>
+            <option value="pdf">application/pdf</option>
+            <option value="rdf">application/rdf+xml</option>
+            <option value="rss">application/rss+xml</option>
+            <option value="xml">application/xml</option>
+            <option value="xsh">application/x-sh</option>
+            <option value="tika">application/x-tika-msoffice</option>
+            <option value="zip">application/zip</option>
+            <option value="mpeg">audio/mpeg</option>
+            <option value="gif">image/gif</option>
+            <option value="jpeg">image/jpeg</option>
+            <option value="png">image/png</option>
+            <option value="plain">text/plain</option>
+            <option value="mp4">video/mp4</option>
+            <option value="quick">video/quicktime</option>
+        </select>
+        </div>
+        <br>
+        <br>
+        <div class="container" id="data-info">
+      <!-- Nav tabs -->
+      <ul class="nav nav-pills tabcolor">
+         <li class="active"><a data-toggle="pill" href="#bfa"  data-src="bfa/index.html">Byte Frequency analysis</a></li>
+         <li><a data-toggle="pill" href="#bfc"  data-src="bfdc/index.html">Byte Frequency Distribution Correlation</a></li>
+         <li><a data-toggle="pill" href="#bfcc"  data-src="bfcc/index.html">Byte Frequency Distribution Cross Correlation</a></li>
+          <li><a data-toggle="pill" href="#fht"  data-src="fht/index.html">File Header Trailer Analysis</a></li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+      <!--Right Now-->
+      <div class="tab-pane active" id="bfa">
+          <br>
+          <iframe src="bfa/index.html?mime=octet" width="100%" height="600">
+          </iframe>
+          </div>
+          <div class="tab-pane" id="bfc">
+           <br>
+          <iframe src="bfdc/index.html?mime=pdf" width="100%" height="600">
+          </iframe>
+          </div>
+          <div class="tab-pane" id="bfcc">
+           <br>
+          <iframe src="bfcc/index.html?mime=pdf" width="100%" height="600">
+          </iframe>
+          </div>
+          <div class="tab-pane" id="fht">
+           <br>
+          <iframe src="fht/index.html?mime=pdf" width="100%" height="600">
+          </iframe>
+          </div>
+            </div>
+        </div>
+    </body>
+</html>
