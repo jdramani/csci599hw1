@@ -1,4 +1,4 @@
-
+var bytes;
 window.onload = function () {
 
     var fht = function (path) {
@@ -19,7 +19,6 @@ window.onload = function () {
             
             d3.select("svg").remove();
             d3.select("rowLabelg").remove();
-            d3.select("colLabelg").remove();
             main(rows, label_col_full.slice(1), label_row);
             
         });
@@ -51,7 +50,7 @@ window.onload = function () {
         fht(path);
     });
 
-    var bytes = d3.select("select#bytes")[0][0].value;
+    bytes = d3.select("select#bytes")[0][0].value;
     d3.select("select#bytes").on("change", function () {
         bytes = d3.select("select#bytes")[0][0].value;
         path = "data/" + mime +  "-" + ht + ".csv";
@@ -161,8 +160,17 @@ for(var m=0; m<256;m++)
 
 colLabel.push('Byte '+m);
 }
-var row;
-rowLabel = ['Byte 0','Byte 1','Byte 2','Byte 3','Byte 4','Byte 5','Byte 6','Byte 7','Byte 8','Byte 9','Byte 10','Byte 11','Byte 12','Byte 13','Byte 14','Byte 15']
+
+row16 = ['Byte 0','Byte 1','Byte 2','Byte 3','Byte 4','Byte 5','Byte 6','Byte 7','Byte 8','Byte 9','Byte 10','Byte 11','Byte 12','Byte 13','Byte 14','Byte 15']
+row8 = ['Byte 0','Byte 1','Byte 2','Byte 3','Byte 4','Byte 5','Byte 6','Byte 7']
+row4 = ['Byte 0','Byte 1','Byte 2','Byte 3']
+if(bytes==4)
+    rowLabel=row4;
+    else if(bytes==8)
+        rowLabel=row8;
+    else
+        rowLabel=row16;
+    console.log(rowLabel);
 var rowLabels = svg.append("g")
       .selectAll(".rowLabelg")
       .data(rowLabel)

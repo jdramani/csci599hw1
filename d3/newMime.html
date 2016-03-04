@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+  .legend {
+    font-size: 12px;
+  }
+  rect {
+    stroke-width: 2;
+  }
+
+</style>
+<body>
+  <center>  <h1>New MIME diversity</h1>
+    <h6>-use tooltip to check type and count</h6></center>
+   <div class="tooltip" style="opacity: 0.01;padding: 10px;
+        background-color: white;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);"></div>
+<script src="d3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 1200 ,
+    height = 500,
+    radius = 500 / 2;
+
+    var legendRectSize = 18;
+var legendSpacing = 4;
+
+var key = function(d){ return d.data.type; };
+
+var color = d3.scale.category20();
+
+var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(0);
+
+var labelArc = d3.svg.arc()
+    .outerRadius(radius + 80)
+    .innerRadius(radius - 40);
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.count; });
+
+    d3.select('.tooltip').style('padding',' 10px')
+.style('background',' white')
+.style('border-radius',' 10px')
+.style('box-shadow',' 4px 4px 10px rgba(0, 0, 0, 0.4)');
+    
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+var tooltip = d3.select('body').select('div.tooltip');
+d3.csv("newdata.csv", type, function(error, data) {
+  if (error) throw error;
+
+  var g = svg.selectAll(".arc")
+      .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc")
+	.attr("class", "lines");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color(d.data.type); })
+  .on('mouseover', function (d) {
+             tooltip.style("opacity", 0.8)
+	    .style('position', 'absolute')
+            .style("left", (d3.event.pageX + 35) + 'px')
+            .style("top", (d3.event.pageY + 30) + 'px')
+            .html("Type: "+d.data.type+"<br>Count: "+d.data.count);
+  });;
+
+});
+    
+
+function type(d) {
+  d.count = +d.count;
+  return d;
+}
+      
+
+
+</script>

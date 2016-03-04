@@ -17,7 +17,7 @@
     </style>
     <script>
     $().ready(function() {
-          $(".nav-tabs li").on("click", function(e) {
+          $(".nav-pills li").on("click", function(e) {
 
                 e.preventDefault();
                 e.stopPropagation();
@@ -46,19 +46,19 @@
         <label for="type">Choose the MIME type:</label>
         <select id="mime" class="form-control">
             <option value="octet">application/octet-stream</option>
-            <option value="pdf">application/pdf</option>
             <option value="rdf">application/rdf+xml</option>
-            <option value="rss">application/rss+xml</option>
+            <option value="excel">application/vnd.ms-excel</option>
+            <option value="xelc">application/x-elc</option>
             <option value="xml">application/xml</option>
             <option value="xsh">application/x-sh</option>
-            <option value="tika">application/x-tika-msoffice</option>
-            <option value="zip">application/zip</option>
-            <option value="mpeg">audio/mpeg</option>
-            <option value="gif">image/gif</option>
-            <option value="jpeg">image/jpeg</option>
-            <option value="png">image/png</option>
+            <option value="ooxml">application/x-tika-ooxml</option>
+            <option value="mp4">audio/mp4</option>
+            <option value="tiff">image/tiff</option>
+            <option value="message">message/rfc822</option>
+            <option value="wmv">video/x-ms-wmv</option>
+            <option value="mpeg">video/mpeg</option>
             <option value="plain">text/plain</option>
-            <option value="mp4">video/mp4</option>
+            <option value="vidmp4">video/mp4</option>
             <option value="quick">video/quicktime</option>
         </select>
         </div>
@@ -82,17 +82,17 @@
           </div>
           <div class="tab-pane" id="bfc">
            <br>
-          <iframe src="bfdc/index.html?mime=pdf" width="100%" height="600">
+          <iframe src="bfdc/index.html?mime=octet" width="100%" height="600">
           </iframe>
           </div>
           <div class="tab-pane" id="bfcc">
            <br>
-          <iframe src="bfcc/index.html?mime=pdf" width="100%" height="600">
+          <iframe src="bfcc/index.html?mime=octet" width="100%" height="600">
           </iframe>
           </div>
           <div class="tab-pane" id="fht">
            <br>
-          <iframe src="fht/index.html?mime=pdf" width="100%" height="600">
+          <iframe src="fht/index.html?mime=octet" width="100%" height="600">
           </iframe>
           </div>
             </div>

@@ -10,25 +10,36 @@
 .arc path {
   stroke: #fff;
 }
-polyline{
-	opacity: .3;
-	stroke: black;
-	stroke-width: 2px;
-	fill: none;
-}
+
+  .legend {
+    font-size: 12px;
+  }
+  rect {
+    stroke-width: 2;
+  }
+
 </style>
 <body>
-    <br>
-    <br>
-    <g class="legend"></g>
+  <center>  <h1>Existing MIME diversity</h1>
+    <h6>-use tooltip to check type and count</h6></center>
+   <div class="tooltip" style="opacity: 0.01;padding: 10px;
+        background-color: white;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);"></div>
 <script src="d3.min.js"></script>
 <script>
 
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 ,
-    height = 800,
+    width = 1200 ,
+    height = 500,
     radius = 500 / 2;
 
+    var legendRectSize = 18;
+var legendSpacing = 4;
 
 var key = function(d){ return d.data.type; };
 
@@ -46,12 +57,17 @@ var pie = d3.layout.pie()
     .sort(null)
     .value(function(d) { return d.count; });
 
+    d3.select('.tooltip').style('padding',' 10px')
+.style('background',' white')
+.style('border-radius',' 10px')
+.style('box-shadow',' 4px 4px 10px rgba(0, 0, 0, 0.4)');
+    
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
+var tooltip = d3.select('body').select('div.tooltip');
 d3.csv("data.csv", type, function(error, data) {
   if (error) throw error;
 
@@ -63,13 +79,17 @@ d3.csv("data.csv", type, function(error, data) {
 
   g.append("path")
       .attr("d", arc)
-      .style("fill", function(d) { return color(d.data.type); });
+      .style("fill", function(d) { return color(d.data.type); })
+  .on('mouseover', function (d) {
+             tooltip.style("opacity", 0.8)
+	    .style('position', 'absolute')
+            .style("left", (d3.event.pageX + 35) + 'px')
+            .style("top", (d3.event.pageY + 30) + 'px')
+            .html("Type: "+d.data.type+"<br>Count: "+d.data.count);
+  });;
 
-  g.append("text")
-      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d)+ ")"; })
-      .attr("dy", ".35em")
-      .text(function(d) { return d.data.type; });
 });
+    
 
 function type(d) {
   d.count = +d.count;
